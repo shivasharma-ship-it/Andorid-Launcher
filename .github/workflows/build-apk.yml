@@ -15,23 +15,15 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v6
 
-      - name: Unzip uploaded project
+      - name: Locate Android project
         run: |
-          ZIP_FILE="$(find . -maxdepth 3 -name '*.zip' | head -n 1)"
+          echo "Repo files:"
+          find . -maxdepth 5 -type f | sort
 
-          if [ -z "$ZIP_FILE" ]; then
-            echo "ERROR: No ZIP file found."
-            exit 1
-          fi
-
-          echo "Using ZIP: $ZIP_FILE"
-          mkdir extracted
-          unzip -q "$ZIP_FILE" -d extracted
-
-          SETTINGS_FILE="$(find extracted -name settings.gradle -o -name settings.gradle.kts | head -n 1)"
+          SETTINGS_FILE="$(find . -name settings.gradle -o -name settings.gradle.kts | head -n 1)"
 
           if [ -z "$SETTINGS_FILE" ]; then
-            echo "ERROR: No settings.gradle found inside ZIP."
+            echo "ERROR: No settings.gradle found. Check that build.gradle, settings.gradle, and app/ are uploaded."
             exit 1
           fi
 
