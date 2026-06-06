@@ -1,5 +1,7 @@
 name: Build APK
-
+ run: |
+          cd "$PROJECT_DIR"
+          gradle --no-daemon :app:assembleDebug --stacktrace
 on:
   workflow_dispatch:
   push:
